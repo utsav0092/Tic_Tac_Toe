@@ -48,7 +48,7 @@
         <li><strong>Multiplayer Mode:</strong> Add an option for two human players to play without the AI.</li>
     </ul>
 <hr />
-    <p>For the credit and video overview prefer:- <a>https://youtu.be/P2TcQ3h0ipQ</a></p>
+    <p>For the credit and video overview prefer:- <a href="https://youtu.be/P2TcQ3h0ipQ">Click here</a></p>
 </body>
 
 </html>

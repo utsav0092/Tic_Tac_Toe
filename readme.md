@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-Tac-Toe Game README</title>
-</head>
-
-<body>
+<body
     <h1>Tic-Tac-Toe Game with AI (Minimax Algorithm)</h1>
 
 <h2>Overview</h2>

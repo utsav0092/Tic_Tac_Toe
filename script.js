@@ -1,6 +1,9 @@
 var origBoard;
+let currMode = ''; // 'twoPlayer' or 'ai'
+let currPlayer = 'O'; // 'O' or 'X'
 const huPlayer = 'O';
 const aiPlayer = 'X';
+const secondPlayer = 'X';
 const winCombos = [
     [0, 1, 2],
     [3, 4, 5],
@@ -13,11 +16,29 @@ const winCombos = [
 ]
 
 const cells = document.querySelectorAll('.cell');
-startGame();
+
+function selectMode(mode) {
+    currMode = mode;
+    document.getElementById('landing-page').classList.remove('active');
+    document.getElementById('game-page').classList.add('active');
+
+    const title = mode === 'ai' ? "AI Opponent" : "Two Player Mode";
+    document.getElementById('mode-title').innerText = title;
+
+    startGame();
+}
+
+function goBack() {
+    document.getElementById('game-page').classList.remove('active');
+    document.getElementById('landing-page').classList.add('active');
+    document.querySelector(".endgame").style.display = "none";
+}
 
 function startGame() {
     document.querySelector(".endgame").style.display = "none";
     origBoard = Array.from(Array(9).keys());
+    currPlayer = huPlayer; // Human always starts as O
+
     for (var i = 0; i < cells.length; i++) {
         cells[i].innerText = '';
         cells[i].style.removeProperty('background-color');
@@ -27,8 +48,17 @@ function startGame() {
 
 function turnClick(square) {
     if (typeof origBoard[square.target.id] == 'number') {
-        turn(square.target.id, huPlayer)
-        if (!checkWin(origBoard, huPlayer) && !checkTie()) turn(bestSpot(), aiPlayer);
+        if (currMode === 'ai') {
+            turn(square.target.id, huPlayer);
+            if (!checkWin(origBoard, huPlayer) && !checkTie()) turn(bestSpot(), aiPlayer);
+        } else {
+            // Two player mode
+            turn(square.target.id, currPlayer);
+            // Switch turn if game is not won or tied
+            if (!checkWin(origBoard, currPlayer) && !checkTie()) {
+                currPlayer = currPlayer === huPlayer ? secondPlayer : huPlayer;
+            }
+        }
     }
 }
 
@@ -60,7 +90,15 @@ function gameOver(gameWon) {
     for (var i = 0; i < cells.length; i++) {
         cells[i].removeEventListener('click', turnClick, false);
     }
-    declareWinner(gameWon.player == huPlayer ? "You win!" : "You lose.");
+
+    let winnerText;
+    if (currMode === 'ai') {
+        winnerText = gameWon.player == huPlayer ? "You win!" : "You lose.";
+    } else {
+        winnerText = gameWon.player == huPlayer ? "Player O wins!" : "Player X wins!";
+    }
+
+    declareWinner(winnerText);
 }
 
 function declareWinner(who) {
